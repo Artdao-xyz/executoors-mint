@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+	font-family: 'Schmaltzy';
+	src: url('/fonts/Schmaltzy.woff2');
+	font-style: normal;
+}
