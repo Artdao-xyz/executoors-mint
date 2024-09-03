@@ -4,13 +4,15 @@
 </script>
 
 <header class="relative w-full px-2">
-    <img class="lg:hidden mx-auto" src="media/logo.png" alt="logo">
+    <a class="lg:hidden mx-auto cursor-pointer" target="_blank" href="https://executoors.netlify.app/">
+    <img src="media/logo.png" alt="logo">
+    </a>
     <div class="flex items-center justify-center gap-2 lg:gap-10 pt-4">
-        <a href={"#"}><img class="h-8 2xl:h-12" src="media/discord.png" alt="discord"></a>
-        <a href={"#"}><img class="h-8 2xl:h-12" src="media/telegram.png" alt="telegram"></a>
-        <img class="hidden lg:block h-52" src="media/logo.png" alt="logo">
-        <a href={"#"}><img class="h-8 2xl:h-12" src="media/x.png" alt="x"></a>
-        <a href={"#"}><img class="h-8 2xl:h-12" src="media/thunder.png" alt="thunder"></a>
+        <a href={"#"}><img class="h-8 xl:h-12" src="media/discord.png" alt="discord"></a>
+        <a href={"#"}><img class="h-8 xl:h-12" src="media/telegram.png" alt="telegram"></a>
+        <a  class="hidden lg:block" target="_blank" href="https://executoors.netlify.app/"><img class=" h-52" src="media/logo.png" alt="logo"></a>
+        <a href={"#"}><img class="h-8 xl:h-12" src="media/x.png" alt="x"></a>
+        <a href={"#"}><img class="h-8 xl:h-12" src="media/thunder.png" alt="thunder"></a>
     </div>
 
     <WalletProvider>
