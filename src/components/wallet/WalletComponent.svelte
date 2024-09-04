@@ -36,17 +36,17 @@
 
 <div 
 	bind:this={div}
-	class="z-10 absolute right-10 top-0 text-center bg-no-repeat bg-center bg-contain w-52 h-20 " 
+	class="absolute right-2 md:right-10 top-0 text-center bg-no-repeat bg-center bg-contain w-32 md:w-52 h-12 md:h-20 z-10" 
     style="background-image: url('/media/wallet-bg.png')">
     {#if $WalletButtonStore.initialized}
         {#if !$walletStore.isConnected}
-            <button class="font-schmaltzy text-stroke text-[#fff004] font-bold uppercase text-[32px] mt-3 tracking-wide rotate-6"
+            <button class="font-schmaltzy text-stroke text-[#fff004] font-bold uppercase text-xl md:text-[32px] mt-2 md:mt-4 tracking-wide rotate-6"
 				on:click={() => { showModal = true; }}>
                 Connect
             </button>
         {:else}
             <button 
-				on:click={disconnectWallet} class="font-schmaltzy text-stroke font-bold text-[#fff004] text-2xl mt-4  rotate-3" 
+				on:click={disconnectWallet} class="font-schmaltzy text-stroke font-bold text-[#fff004] text-xs md:text-2xl mt-4 rotate-3" 
                 type="button">
                 {formatFuelAddress($walletStore.currentAccount)}
             </button>
