@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type WalletStore from '$store/WalletStore';
+import type WalletStore from '$store/walletStore';
 
 export function updateStoreBooleanField(store: typeof WalletStore, key: string, value: boolean) {
 	store.update((state: any) => {

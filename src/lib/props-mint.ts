@@ -1,4 +1,4 @@
-import walletStore from '$store/WalletStore';
+import walletStore from '$store/walletStore';
 import { PUBLIC_COLLECTION_ID } from '$env/static/public';
 import { Account, Wallet, Provider } from 'fuels';
 import { PropsSDK, Collection, type MintResult } from '@props-labs/fuels';

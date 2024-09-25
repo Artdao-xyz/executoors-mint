@@ -5,7 +5,7 @@ import { PUBLIC_WCPROJECT_ID } from '$env/static/public';
 
 import type { WalletButton } from '$store/WalletButtonsStore';
 import WalletButtonStore from '$store/WalletButtonsStore';
-import walletStore from '$store/WalletStore';
+import walletStore from '$store/walletStore';
 
 let fuel: Fuel;
 let buttons: WalletButton[] = [];
