@@ -1,4 +1,4 @@
-import type { Fuel } from 'fuels';
+import type { Account, Fuel } from 'fuels';
 import { writable } from 'svelte/store';
 
 export enum WalletType {
@@ -15,6 +15,7 @@ export type WalletState = {
 	fuel?: Fuel;
 	isFuelDetected: boolean;
 	isFueletDetected: boolean;
+	account?: Account;
 };
 
 const initialState: WalletState = {

@@ -1,6 +1,8 @@
 <script>
 	import WalletComponent from "$wallet/WalletComponent.svelte";
     import WalletProvider from "$wallet/WalletProvider.svelte";
+	import MintComponent from '/src/components/mint/MintComponent.svelte';
+
 </script>
 
 <header class="relative w-full px-2">
@@ -17,5 +19,7 @@
 
     <WalletProvider>
         <WalletComponent/>
+
+        <MintComponent />
     </WalletProvider>
 </header>

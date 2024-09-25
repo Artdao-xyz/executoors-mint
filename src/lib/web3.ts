@@ -1,11 +1,11 @@
 import { Fuel } from 'fuels';
-import type { CoinQuantity, FuelConnector } from 'fuels';
+import type { Account, CoinQuantity, FuelConnector } from 'fuels';
 import { updateStoreBooleanField, updateStoreStringField } from '$store/updateStoreField';
 import { PUBLIC_WCPROJECT_ID } from '$env/static/public';
 
 import type { WalletButton } from '$store/WalletButtonsStore';
 import WalletButtonStore from '$store/WalletButtonsStore';
-import walletStore from '$store/walletStore';
+import walletStore from '$store/WalletStore';
 
 let fuel: Fuel;
 let buttons: WalletButton[] = [];
@@ -160,7 +160,13 @@ export const connectWallet = async (): Promise<boolean> => {
 		const currentAccount = await getCurrentAccount();
 		if (currentAccount) {
 			updateStoreStringField(walletStore, 'currentAccount', currentAccount);
-			const wallet = await fuel.getWallet(currentAccount);
+			const wallet: Account = await fuel.getWallet(currentAccount);
+
+			walletStore.update((state) => {
+				return { ...state, account: wallet };
+			});
+
+			console.log('wallet  ', wallet);
 			console.log('fuel wallet address', wallet.address.toString());
 		}
 	} catch (e) {

@@ -1,8 +1,76 @@
-<script>
-    import "/src/style.css";
-    import Header from "$frontend/Header.svelte";
-	import MainExecutoor from "$frontend/MainExecutoor.svelte";
-	import Mint from "$frontend/Mint.svelte";
+<script lang="ts">
+	import '/src/style.css';
+
+	import { onMount } from 'svelte';
+
+	import WalletProvider from '$wallet/WalletProvider.svelte';
+	import WalletComponent from '$wallet/WalletComponent.svelte';
+	import MintComponent from '../components/mint/MintComponent.svelte';
+	import Header from '$frontend/Header.svelte';
+	import MainExecutoor from '$frontend/MainExecutoor.svelte';
+	import Mint from '$frontend/Mint.svelte';
+
+	interface Item {
+		id: string;
+		name: string;
+		createdAt: string;
+	}
+
+	interface Artwork {
+		id: string;
+		tokenId: Number;
+		description: string;
+		jpgPath: string;
+		thumbnailPath: string;
+		active: boolean;
+	}
+
+	interface Meta {
+		page: number;
+		limit: number;
+		total: number;
+		totalPages: number;
+	}
+
+	let artworks: Artwork[] = [];
+
+	let meta: Meta = { page: 1, limit: 10, total: 0, totalPages: 0 };
+	let currentPage = 1;
+
+	async function fetchItems(page: number = 1) {
+		const response = await fetch(`/api/artworks?page=${page}&limit=10`);
+		const data = await response.json();
+		artworks = data.artworks;
+		meta = data.meta;
+		currentPage = page;
+
+		console.log('artworks:', artworks);
+	}
+
+	async function getStatus() {
+		const response = await fetch(`/api/status`);
+		const data = await response.json();
+		console.log('status:', data.status);
+	}
+
+	onMount(() => {
+		getStatus();
+		fetchItems();
+	});
+
+	const openNft = (art: Artwork) => {
+		const newTab = window.open('', '_blank');
+
+		// Check if the new tab was successfully opened
+		if (newTab) {
+			const img = document.createElement('img');
+			img.src = art.jpgPath;
+			newTab.document.write(img.outerHTML);
+			newTab.document.close();
+		} else {
+			console.error('Failed to open new tab. Pop-up blocker may be enabled.');
+		}
+	};
 </script>
 
 <div class="w-screen max-w-screen h-svh lg:h-screen max-h-screen relative">
@@ -10,6 +78,36 @@
          style="background-image: url(media/bg.png)">
     </div>
     <Header/>
+
+	<WalletProvider>
+		<WalletComponent />
+
+	</WalletProvider>
     <MainExecutoor/>
     <Mint/>
 </div>
+
+<!-- <h1>Artworks list</h1>
+<div>
+	{#each artworks as item}
+		<button
+			on:click={() => {
+				openNft(item);
+			}}
+		>
+			<p>token ID:{item.tokenId}</p>
+			<p>description: {item.description}</p>
+			<img src={item.thumbnailPath} alt={item.description} />
+		</button>
+	{/each}
+</div>
+
+<div>
+	{#if currentPage > 1}
+		<button on:click={() => fetchItems(currentPage - 1)}>Previous</button>
+	{/if}
+	Page {currentPage} of {meta.totalPages}
+	{#if currentPage < meta.totalPages}
+		<button on:click={() => fetchItems(currentPage + 1)}>Next</button>
+	{/if}
+</div> -->
