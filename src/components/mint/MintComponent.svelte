@@ -1,5 +1,5 @@
 <script lang="ts">
-	import walletStore from '../../store/WalletStore';
+	import walletStore from '$store/WalletStore';
 	import { mintFromCollection, getAvailableMints } from '$lib/props-mint';
 	import MintTransactionStore from '$store/MintTransactionStore';
 	import { PUBLIC_TOTAL_SUPPLY } from '$env/static/public';
