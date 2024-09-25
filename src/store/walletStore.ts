@@ -24,6 +24,6 @@ const initialState: WalletState = {
 	isFueletDetected: false
 };
 
-const walletStore = writable<WalletState>(initialState);
+const WalletStore = writable<WalletState>(initialState);
 
-export default walletStore;
+export default WalletStore;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import walletStore from '/src/store/WalletStore';
+	import WalletStore from '/src/store/WalletStore';
 	import { mintFromCollection, getAvailableMints } from '$lib/props-mint';
 	import MintTransactionStore from '$store/MintTransactionStore';
 	import { PUBLIC_TOTAL_SUPPLY } from '$env/static/public';
@@ -58,7 +58,7 @@
 
 <div class="flex flex-col items-center justify-center gap-0">
 	<!-- <h4 class="text-2l font-bold text-center border-b border-black border-dashed">Mint Component</h4> -->
-	{#if $walletStore.isConnected}
+	{#if $WalletStore.isConnected}
 		<!-- <button
 			class="font-bold text-white text-lg border-2 border-black p-1 rounded bg-blue-400 hover:bg-blue-500"
 			on:click={handleCollectionMint}>Mint from collection</button
