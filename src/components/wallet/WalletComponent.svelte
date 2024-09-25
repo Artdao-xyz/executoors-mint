@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { disconnectWallet } from '$lib/web3';
 	import WalletButtonStore from '$store/WalletButtonsStore';
-	import WalletStore from '/src/store/WalletStore';
+	import WalletStore from '$store/WalletStore';
 	import Modal from './WalletModal.svelte';
 
 	let showModal: boolean = false;
