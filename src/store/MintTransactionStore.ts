@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 export enum transactionStatusType {
-	idle = 'idle',
+	idle = 'not started',
 	started = 'started',
 	pending = 'pending', //pending approval
 	awaitingConfirmation = 'awaiting confirmation',
