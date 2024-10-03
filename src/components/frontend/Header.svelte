@@ -1,25 +1,20 @@
 <script>
 	import WalletComponent from "$wallet/WalletComponent.svelte";
     import WalletProvider from "$wallet/WalletProvider.svelte";
-	import MintComponent from '/src/components/mint/MintComponent.svelte';
-
 </script>
 
-<header class="relative w-full px-2">
-    <a class="lg:hidden mx-auto cursor-pointer" target="_blank" href="https://executoors.netlify.app/">
-    <img class="select-none" draggable="false" src="media/logo.png" alt="logo">
-    </a>
-    <div class="flex items-center justify-center gap-2 lg:gap-10 pt-4">
-        <a href={"#"}><img draggable="false" class="select-none h-8 xl:h-12" src="media/discord.png" alt="discord"></a>
-        <a href={"#"}><img draggable="false" class="select-none h-8 xl:h-12" src="media/telegram.png" alt="telegram"></a>
-        <a  class="hidden lg:block" target="_blank" href="https://executoors.netlify.app/"><img draggable="false" class="select-none h-52" src="media/logo.png" alt="logo"></a>
-        <a href={"#"}><img draggable="false" class="select-none h-8 xl:h-12" src="media/x.png" alt="x"></a>
-        <a href={"#"}><img draggable="false" class="select-none h-8 xl:h-12" src="media/thunder.png" alt="thunder"></a>
+<header class="relative">
+
+    <div class="fixed h-fit w-fit left-1/2 -translate-x-1/2 top-4">
+        <a class="block" target="_blank" href="https://executoors.com/"><img draggable="false" class="w-56 md:w-96 object-contain" src="media/logo.png" alt="logo"></a>
+    </div>
+    
+    <div class="hidden lg:block fixed w-fit h-fit left-4 bottom-4 space-y-3 z-20">
+        <a class="block active:brightness-50" target="_blank" href="https://x.com/executoors"><img draggable="false" class="h-14 object-contain" src="media/x.png" alt="x"></a>
+        <a class="block active:brightness-50" target="_blank" href="https://t.me/+V1zVFD_TAbM3MGEx"><img draggable="false" class="h-14 object-contain" src="media/telegram.png" alt="telegram"></a>
     </div>
 
     <WalletProvider>
         <WalletComponent/>
-
-        <MintComponent />
     </WalletProvider>
 </header>
