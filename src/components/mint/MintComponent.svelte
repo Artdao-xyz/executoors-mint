@@ -9,8 +9,9 @@
 	let lastMintedTokenId: number[];
 	let amount: number = 1;
 	let availableAssets: number;
+	let price: number = parseInt(PUBLIC_MINT_PRICE);
 	
-    $: total  = PUBLIC_MINT_PRICE * amount;
+    $: total  = price * amount;
 
 	onMount(async () => {
 		availableAssets = await getAvailableMints();
@@ -59,11 +60,13 @@
 </script>
 
 
-<div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 lg:p-10">
-	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
+<div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 lg:p-14">
 	{#if lastMintedTokenId}
-	<img class="select-none w-full h-full object-cover object-top" src={`/images/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor">
+	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
+	<img class="select-none w-full h-full object-cover object-top" src={`https://ipfs.filebase.io/ipfs/bafybeifwzkx2odvm3kiebuzchr6eruh7o6lanh2hxyym5q3omsgpg42mju/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor">
+	<!-- <img class="select-none w-full h-full object-cover object-top" src={`/images/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor"> -->
 	{:else}
+	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
 	<img class="select-none w-full h-full object-contain" src="/media/tbd.png" alt="tbd executoor">
 	{/if}
 </div>
@@ -86,15 +89,17 @@
 		<button 
 			on:click={handleCollectionMint} 
 			class="text-[#4d4d4c] text-stroke text-3xl md:text-4xl uppercase font-bold active:brightness-50 disabled:active:brightness-100 disabled:opacity-50 disabled:cursor-not-allowed" 
-			disabled={$MintTransactionStore.status === 'pending' || $MintTransactionStore.status === 'awaiting confirmation'}
+			disabled={$MintTransactionStore.status === 'preparing to execuute' || $MintTransactionStore.status === 'awaiting confirmation'}
 			>
 			<img class="w-44 h-12 object-contain" src="/media/mint.png" alt="mint">
 		</button>
 
 		<!-- <p>Available assets: {availableAssets} / {totalSupply}</p> -->
 		<!-- <p>Last token minted:{lastMintedTokenId}</p> -->
-		<p class="italic text-sm">Transaction: {$MintTransactionStore.status}</p>		
-	{:else}
-		<p class="lg:text-xl italic">connect your wallet to start...</p>
+		{#if $MintTransactionStore.status !== "not started"}
+			<p class="italic text-sm">{$MintTransactionStore.status}</p>
+	  	{/if}	
+	  {:else}
+		<p class="lg:text-xl italic">connect your wallet to execuute...</p>
 	{/if}
 </div>
