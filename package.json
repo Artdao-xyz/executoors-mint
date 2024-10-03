@@ -26,7 +26,7 @@
 		"postcss": "^8.4.41",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
-		"prisma": "^5.18.0",
+		"prisma": "^5.20.0",
 		"svelte": "^4.2.7",
 		"svelte-check": "^3.6.0",
 		"tailwindcss": "^3.4.11",
@@ -39,7 +39,7 @@
 	"dependencies": {
 		"@designbycode/tailwindcss-text-stroke": "^1.2.1",
 		"@fuels/connectors": "^0.27.1",
-		"@prisma/client": "^5.18.0",
+		"@prisma/client": "^5.20.0",
 		"@props-labs/fuels": "^0.1.9-next.5",
 		"autoprefixer": "^10.4.20",
 		"fuels": "^0.94.6",
