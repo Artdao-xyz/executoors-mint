@@ -24,7 +24,7 @@
         <div class="absolute right-1/3 translate-x-1/3 top-1/2 -translate-y-1/2 text-center lg:space-y-2 flex flex-col items-center justify-center">
             {#if minting}
                 {#if availableAssets != undefined}
-                    {#if $MintTransactionStore.status != "confirmed"}
+                    {#if $MintTransactionStore.status != "executioon confirmed"}
                         <p class="text-2xl lg:text-5xl text-[#0290d9] text-stroke-black">{ `${totalSupply - availableAssets} / ${totalSupply}`}</p>
                         <p class="text-xl lg:text-3xl text-[#0290d9] text-stroke-black uppercase">minted</p>
                     {:else}
