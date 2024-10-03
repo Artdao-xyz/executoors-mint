@@ -9,9 +9,7 @@
 	let lastMintedTokenId: number[];
 	let amount: number = 1;
 	let availableAssets: number;
-	let totalSupply: number = Number(PUBLIC_TOTAL_SUPPLY);
 
-	// let amount = 1;
     const price = 0.0069;
     $: total  = price * amount;
 
@@ -23,6 +21,8 @@
 	async function handleCollectionMint(): Promise<void> {
 		console.log('Minting from collection ', amount, ' tokens');
 		lastMintedTokenId = await mintFromCollection(amount);
+
+		console.log('lastMintedTokenId', lastMintedTokenId);
 
 		await updateMintStatus(lastMintedTokenId);
 		availableAssets = await getAvailableMints();
@@ -51,18 +51,29 @@
 		}
 	}
 
-	function validateInput() {
-		amount = Math.min(3, Math.max(1, Math.floor(Number(amount))));
+	function validateInput(): void {
+		const value: number = parseInt(String(amount), 10);
+		if (!isNaN(value)) {
+			amount = Math.min(3, Math.max(1, value));
+		}
 	}
 </script>
 
-<div class="flex flex-col items-center justify-center gap-0">
-	<!-- <h4 class="text-2l font-bold text-center border-b border-black border-dashed">Mint Component</h4> -->
+
+<div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 lg:p-10">
+	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
+	{#if lastMintedTokenId}
+	<img class="select-none w-full h-full object-cover object-top" src={`/images/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor">
+	{:else}
+	<img class="select-none w-full h-full object-contain" src="/media/tbd.png" alt="tbd executoor">
+	{/if}
+</div>
+{#if lastMintedTokenId}
+	<p class="uppercase text-xl font-bold text-right">executoor #{lastMintedTokenId[0]} & friends</p>
+{/if}
+
+<div class="flex flex-col items-center justify-center gap-1">
 	{#if $walletStore.isConnected}
-		<!-- <button
-			class="font-bold text-white text-lg border-2 border-black p-1 rounded bg-blue-400 hover:bg-blue-500"
-			on:click={handleCollectionMint}>Mint from collection</button
-		> -->
 		<input
 			type="number"
 			bind:value={amount}
@@ -70,14 +81,21 @@
 			min="1"
 			max="3"
 			step="1"
-			class="w-16 p-1 border border-gray-300 rounded"
+			class="w-44 p-1 border border-gray-300 rounded"
 		/>
-		<button on:click={handleCollectionMint} class="text-[#4d4d4c] text-stroke text-3xl md:text-4xl uppercase font-bold active:brightness-50"><img class="w-44 h-12 object-contain" src="/media/mint.png" alt="mint"></button>
-		<p class="uppercase text-2xl tracking-wider font-bold">total: {total} ETH</p>
-		<p>Available assets: {availableAssets} / {totalSupply}</p>
-		<p>Transaction state: {$MintTransactionStore.status}</p>
-		<p>Last token minted:{lastMintedTokenId}</p>
+		<p class="uppercase lg:text-lg tracking-wider font-bold">total: {total} ETH</p>
+		<button 
+			on:click={handleCollectionMint} 
+			class="text-[#4d4d4c] text-stroke text-3xl md:text-4xl uppercase font-bold active:brightness-50 disabled:active:brightness-100 disabled:opacity-50 disabled:cursor-not-allowed" 
+			disabled={$MintTransactionStore.status === 'pending' || $MintTransactionStore.status === 'awaiting confirmation'}
+			>
+			<img class="w-44 h-12 object-contain" src="/media/mint.png" alt="mint">
+		</button>
+
+		<!-- <p>Available assets: {availableAssets} / {totalSupply}</p> -->
+		<!-- <p>Last token minted:{lastMintedTokenId}</p> -->
+		<p class="italic text-sm">Transaction: {$MintTransactionStore.status}</p>		
 	{:else}
-		<p>Connect your wallet to mint</p>
+		<p class="lg:text-xl italic">connect your wallet to start...</p>
 	{/if}
 </div>
