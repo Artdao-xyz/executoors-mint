@@ -2,16 +2,15 @@
 	import walletStore from '$store/walletStore';
 	import { mintFromCollection, getAvailableMints } from '$lib/props-mint';
 	import MintTransactionStore from '$store/MintTransactionStore';
-	import { PUBLIC_TOTAL_SUPPLY } from '$env/static/public';
+	import { PUBLIC_MINT_PRICE } from '$env/static/public';
 
 	import { onMount } from 'svelte';
 
 	let lastMintedTokenId: number[];
 	let amount: number = 1;
 	let availableAssets: number;
-
-    const price = 0.0069;
-    $: total  = price * amount;
+	
+    $: total  = PUBLIC_MINT_PRICE * amount;
 
 	onMount(async () => {
 		availableAssets = await getAvailableMints();
