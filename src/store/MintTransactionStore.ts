@@ -3,9 +3,9 @@ import { writable } from 'svelte/store';
 export enum transactionStatusType {
 	idle = 'not started',
 	started = 'started',
-	pending = 'pending', //pending approval
+	pending = 'preparing to execuute', //pending approval
 	awaitingConfirmation = 'awaiting confirmation',
-	confirmed = 'confirmed',
+	confirmed = 'executioon confirmed',
 	failed = 'failed',
 	rejected = 'rejected'
 }
