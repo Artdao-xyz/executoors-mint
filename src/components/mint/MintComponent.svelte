@@ -17,7 +17,7 @@
 		availableAssets = await getAvailableMints();
 		console.log('Available assets on mount:', availableAssets);
 
-		// $MintTransactionStore.status[0]
+		// $MintTransactionStore.status[4]
 	});
 
 	async function handleCollectionMint(): Promise<void> {
@@ -122,9 +122,9 @@
 			/>
 		{/if}
 		<p class="uppercase lg:text-lg tracking-wider font-bold">total: {total} ETH</p>
-		{#if $MintTransactionStore.status === 'executioon confirmed'}
+		{#if lastMintedTokenId}
 			<div class="flex items-center gap-2">
-				<button class="active:brightness-50"  on:click={()=>{$MintTransactionStore.status[0]}} >
+				<button class="active:brightness-50" on:click={()=>{lastMintedTokenId = null}} >
 					<img class="h-10 object-contain" src="/media/mint-more.png" alt="mint">
 				</button>
 				<button class="active:brightness-50"  on:click={downloadAllImages} >
