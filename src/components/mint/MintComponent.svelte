@@ -1,7 +1,7 @@
 <script lang="ts">
 	import walletStore from '$store/walletStore';
 	import { mintFromCollection, getAvailableMints } from '$lib/props-mint';
-	import MintTransactionStore from '$store/MintTransactionStore';
+	import MintTransactionStore, { transactionStatusType } from '$store/MintTransactionStore';
 	import { PUBLIC_MINT_PRICE } from '$env/static/public';
 
 	import { onMount } from 'svelte';
@@ -53,6 +53,14 @@
 		}
 	}
 
+	  // Function to reset the transaction status
+	function resetTransactionStatus() {
+		MintTransactionStore.update(currentState => ({
+		...currentState, // Keep existing state properties
+		status: transactionStatusType.idle // Update status to 'not started'
+		}));
+	}
+
 	function validateInput(): void {
 		const value: number = parseInt(String(amount), 10);
 		if (!isNaN(value)) {
@@ -90,7 +98,7 @@
 
 
 <div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 2xl:p-14">
-	{#if lastMintedTokenId}
+	{#if lastMintedTokenId && $MintTransactionStore.status === "executioon confirmed"}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
 	<img class="select-none w-full h-full object-cover object-top" src={`https://ipfs.filebase.io/ipfs/bafybeifwzkx2odvm3kiebuzchr6eruh7o6lanh2hxyym5q3omsgpg42mju/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor">
 	<!-- <img class="select-none w-full h-full object-cover object-top" src={`/images/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor"> -->
@@ -120,25 +128,23 @@
 				step="1"
 				class="w-44 p-1 border border-gray-300 rounded"
 			/>
-		{/if}
-		<p class="uppercase lg:text-lg tracking-wider font-bold">total: {total} ETH</p>
-		{#if lastMintedTokenId}
+			<button 
+			on:click={handleCollectionMint} 
+			class="active:brightness-50 disabled:active:brightness-100 disabled:opacity-50 disabled:cursor-not-allowed" 
+			disabled={$MintTransactionStore.status === 'preparing to execuute' || $MintTransactionStore.status === 'awaiting confirmation'}
+			>
+				<p class="uppercase lg:text-lg tracking-wider font-bold">total: {total} ETH</p>
+				<img class="w-44 h-12 object-contain" src="/media/mint.png" alt="mint">
+			</button>
+		{:else}
 			<div class="flex items-center gap-2">
-				<button class="active:brightness-50" on:click={()=>{lastMintedTokenId = null}} >
+				<button class="active:brightness-50" on:click={resetTransactionStatus} >
 					<img class="h-10 object-contain" src="/media/mint-more.png" alt="mint">
 				</button>
 				<button class="active:brightness-50"  on:click={downloadAllImages} >
 					<img class="h-10 object-contain" src="/media/download.png" alt="download">
 				</button>
 			</div>
-		{:else}
-			<button 
-				on:click={handleCollectionMint} 
-				class="active:brightness-50 disabled:active:brightness-100 disabled:opacity-50 disabled:cursor-not-allowed" 
-				disabled={$MintTransactionStore.status === 'preparing to execuute' || $MintTransactionStore.status === 'awaiting confirmation'}
-				>
-				<img class="w-44 h-12 object-contain" src="/media/mint.png" alt="mint">
-			</button>
 		{/if}
 		<!-- <p>Available assets: {availableAssets} / {totalSupply}</p> -->
 		<!-- <p>Last token minted:{lastMintedTokenId}</p> -->
