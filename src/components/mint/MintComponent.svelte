@@ -9,13 +9,15 @@
 	let lastMintedTokenId: number[];
 	let amount: number = 1;
 	let availableAssets: number;
-	let price: number = parseInt(PUBLIC_MINT_PRICE);
+	let price: number = parseFloat(PUBLIC_MINT_PRICE);
 	
     $: total  = price * amount;
 
 	onMount(async () => {
 		availableAssets = await getAvailableMints();
 		console.log('Available assets on mount:', availableAssets);
+
+		// $MintTransactionStore.status[0]
 	});
 
 	async function handleCollectionMint(): Promise<void> {
@@ -57,10 +59,37 @@
 			amount = Math.min(3, Math.max(1, value));
 		}
 	}
+
+	async function downloadAllImages() {
+        for (const tokenId of lastMintedTokenId) {
+            const imageUrl = `https://ipfs.filebase.io/ipfs/bafybeifwzkx2odvm3kiebuzchr6eruh7o6lanh2hxyym5q3omsgpg42mju/${tokenId.toString().padStart(5, '0')}.png`;
+            
+            try {
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `executoor_${tokenId.toString()}.png`;
+
+                document.body.appendChild(link);
+                link.click();
+
+                // Cleanup
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error(`Error downloading the image for token ${tokenId}:`, error);
+            }
+        }
+    }
+
+	// $: console.log('$MintTransactionStore.status', $MintTransactionStore.status)
 </script>
 
 
-<div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 lg:p-14">
+<div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 2xl:p-14">
 	{#if lastMintedTokenId}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
 	<img class="select-none w-full h-full object-cover object-top" src={`https://ipfs.filebase.io/ipfs/bafybeifwzkx2odvm3kiebuzchr6eruh7o6lanh2hxyym5q3omsgpg42mju/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor">
@@ -71,29 +100,46 @@
 	{/if}
 </div>
 {#if lastMintedTokenId}
-	<p class="uppercase text-xl font-bold text-right">executoor #{lastMintedTokenId[0]} & friends</p>
+<p class="uppercase text-xl font-bold text-right">
+	<span>executoor #{lastMintedTokenId[0]}</span>
+	{#if lastMintedTokenId.length>1}
+		<span>& friends</span>
+	{/if}
+	</p>
 {/if}
 
 <div class="flex flex-col items-center justify-center gap-1">
 	{#if $walletStore.isConnected}
-		<input
-			type="number"
-			bind:value={amount}
-			on:input={validateInput}
-			min="1"
-			max="3"
-			step="1"
-			class="w-44 p-1 border border-gray-300 rounded"
-		/>
+		{#if $MintTransactionStore.status !== 'executioon confirmed'}
+			<input
+				type="number"
+				bind:value={amount}
+				on:input={validateInput}
+				min="1"
+				max="3"
+				step="1"
+				class="w-44 p-1 border border-gray-300 rounded"
+			/>
+		{/if}
 		<p class="uppercase lg:text-lg tracking-wider font-bold">total: {total} ETH</p>
-		<button 
-			on:click={handleCollectionMint} 
-			class="text-[#4d4d4c] text-stroke text-3xl md:text-4xl uppercase font-bold active:brightness-50 disabled:active:brightness-100 disabled:opacity-50 disabled:cursor-not-allowed" 
-			disabled={$MintTransactionStore.status === 'preparing to execuute' || $MintTransactionStore.status === 'awaiting confirmation'}
-			>
-			<img class="w-44 h-12 object-contain" src="/media/mint.png" alt="mint">
-		</button>
-
+		{#if $MintTransactionStore.status === 'executioon confirmed'}
+			<div class="flex items-center gap-2">
+				<button class="active:brightness-50"  on:click={()=>{$MintTransactionStore.status[0]}} >
+					<img class="h-10 object-contain" src="/media/mint-more.png" alt="mint">
+				</button>
+				<button class="active:brightness-50"  on:click={downloadAllImages} >
+					<img class="h-10 object-contain" src="/media/download.png" alt="download">
+				</button>
+			</div>
+		{:else}
+			<button 
+				on:click={handleCollectionMint} 
+				class="active:brightness-50 disabled:active:brightness-100 disabled:opacity-50 disabled:cursor-not-allowed" 
+				disabled={$MintTransactionStore.status === 'preparing to execuute' || $MintTransactionStore.status === 'awaiting confirmation'}
+				>
+				<img class="w-44 h-12 object-contain" src="/media/mint.png" alt="mint">
+			</button>
+		{/if}
 		<!-- <p>Available assets: {availableAssets} / {totalSupply}</p> -->
 		<!-- <p>Last token minted:{lastMintedTokenId}</p> -->
 		{#if $MintTransactionStore.status !== "not started"}
