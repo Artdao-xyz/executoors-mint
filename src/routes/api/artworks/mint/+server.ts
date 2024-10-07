@@ -3,16 +3,16 @@ import type { RequestHandler } from './$types';
 import prisma from '$lib/prisma';
 
 export const POST: RequestHandler = async ({ request }) => {
-	console.log('post reuquest arrived');
+	console.log('post request arrived');
 	try {
-		const { tokenIds } = await request.json();
+		const { editions } = await request.json();  // Change to receive 'editions'
 
-		console.log('tokenIds:', tokenIds);
+		console.log('editions:', editions);
 
 		const updatedRecords = await prisma.$transaction(
-			tokenIds.map((tokenId: number) =>
+			editions.map((edition: number) =>
 				prisma.artwork.update({
-					where: { tokenId: tokenId.toString() },
+					where: { edition },  // Update to use 'edition' as the unique identifier
 					data: { active: true }
 				})
 			)
@@ -24,3 +24,4 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ error: 'Failed to update record' }, { status: 500 });
 	}
 };
+
