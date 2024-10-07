@@ -22,9 +22,10 @@ model Item {
 
 model Artwork {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  tokenId       String   @unique
+  edition       Int      @unique  // Set edition as unique
+  tokenId       String
   description   String
-  jpgPath       String
+  image         String
   thumbnailPath String
   active        Boolean
   createdAt     DateTime @default(now())
