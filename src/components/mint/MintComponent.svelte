@@ -30,14 +30,14 @@
 		availableAssets = await getAvailableMints();
 	}
 
-	async function updateMintStatus(tokenIds: number[]) {
+	async function updateMintStatus(editions: number[]) {
 		try {
 			const response = await fetch('/api/artworks/mint', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ tokenIds })
+				body: JSON.stringify({ editions })
 			});
 
 			if (!response.ok) {
@@ -70,7 +70,7 @@
 
 	async function downloadAllImages() {
         for (const tokenId of lastMintedTokenId) {
-            const imageUrl = `https://ipfs.filebase.io/ipfs/bafybeifwzkx2odvm3kiebuzchr6eruh7o6lanh2hxyym5q3omsgpg42mju/${tokenId.toString().padStart(5, '0')}.png`;
+            const imageUrl = `https://ipfs.filebase.io/ipfs/bafybeicwudiwhs6zanzootxak3bzhxsnoagkglikrbjwucjl5c3y4xne6y/${tokenId.toString().padStart(5, '0')}.png`;
             
             try {
                 const response = await fetch(imageUrl);
@@ -100,7 +100,7 @@
 <div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 2xl:p-14">
 	{#if lastMintedTokenId && $MintTransactionStore.status === "executioon confirmed"}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
-	<img class="select-none w-full h-full object-cover object-top" src={`https://ipfs.filebase.io/ipfs/bafybeifwzkx2odvm3kiebuzchr6eruh7o6lanh2hxyym5q3omsgpg42mju/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor">
+	<img class="select-none w-full h-full object-cover object-top" src={`https://ipfs.filebase.io/ipfs/bafybeicwudiwhs6zanzootxak3bzhxsnoagkglikrbjwucjl5c3y4xne6y/${lastMintedTokenId[0].toString().padStart(4, '0')}.png`} alt="tbd executoor">
 	<!-- <img class="select-none w-full h-full object-cover object-top" src={`/images/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor"> -->
 	{:else}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
