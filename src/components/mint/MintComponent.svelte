@@ -70,7 +70,7 @@
 
 	async function downloadAllImages() {
         for (const tokenId of lastMintedTokenId) {
-            const imageUrl = `https://ipfs.filebase.io/ipfs/bafybeicwudiwhs6zanzootxak3bzhxsnoagkglikrbjwucjl5c3y4xne6y/${tokenId.toString().padStart(5, '0')}.png`;
+            const imageUrl = `https://ipfs.filebase.io/ipfs/bafybeicwudiwhs6zanzootxak3bzhxsnoagkglikrbjwucjl5c3y4xne6y/${tokenId.toString().padStart(4, '0')}.png`;
             
             try {
                 const response = await fetch(imageUrl);
