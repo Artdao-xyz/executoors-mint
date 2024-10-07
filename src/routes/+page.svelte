@@ -86,28 +86,3 @@
     <MainExecutoor/>
     <Mint/>
 </div>
-
-<!-- <h1>Artworks list</h1>
-<div>
-	{#each artworks as item}
-		<button
-			on:click={() => {
-				openNft(item);
-			}}
-		>
-			<p>token ID:{item.tokenId}</p>
-			<p>description: {item.description}</p>
-			<img src={item.thumbnailPath} alt={item.description} />
-		</button>
-	{/each}
-</div>
-
-<div>
-	{#if currentPage > 1}
-		<button on:click={() => fetchItems(currentPage - 1)}>Previous</button>
-	{/if}
-	Page {currentPage} of {meta.totalPages}
-	{#if currentPage < meta.totalPages}
-		<button on:click={() => fetchItems(currentPage + 1)}>Next</button>
-	{/if}
-</div> -->
