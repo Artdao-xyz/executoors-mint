@@ -3,6 +3,7 @@
 	import WalletButtonStore from '$store/WalletButtonsStore';
 	import walletStore from '$store/walletStore';
 	import Modal from './WalletModal.svelte';
+	import { Address } from 'fuels';
 
 	let showModal: boolean = false;
 
@@ -10,7 +11,15 @@
 		if (!address) {
 			return '';
 		}
+        address = convertWallet(address);
+        console.log(address)
 		return `${address.slice(0, 6)}...${address.slice(-4)}`;
+	};
+    
+	const convertWallet = (address: string) => {
+		return address.toLowerCase().includes('fuel')
+			? Address.fromAddressOrString(address).toB256()
+			: address;
 	};
 </script>
 
