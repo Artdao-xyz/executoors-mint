@@ -91,7 +91,7 @@
                 console.error(`Error downloading the image for token ${tokenId}:`, error);
             }
         }
-    }
+    };
 
 	// $: console.log('$MintTransactionStore.status', $MintTransactionStore.status)
 </script>
