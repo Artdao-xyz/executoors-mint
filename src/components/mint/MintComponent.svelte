@@ -3,11 +3,12 @@
 	import { mintFromCollection, getAvailableMints } from '$lib/props-mint';
 	import MintTransactionStore, { transactionStatusType } from '$store/MintTransactionStore';
 	import { PUBLIC_MINT_PRICE, PUBLIC_IPFS_ADDRESS } from '$env/static/public';
-
+	import { getEthBalance } from '$lib/web3';
 	import { onMount } from 'svelte';
 
 	let lastMintedTokenId: number[];
 	let amount: number = 1;
+	let enoughFunds: boolean;
 	let availableAssets: number;
 	let price: number = parseFloat(PUBLIC_MINT_PRICE);
 	
@@ -21,6 +22,16 @@
 	});
 
 	async function handleCollectionMint(): Promise<void> {
+
+		let ethBalance = await getEthBalance();
+		console.log('ETH balance:', ethBalance);
+
+		if (!ethBalance || Number(ethBalance) < amount * price) {
+			// alert('Not enough funds to execuute');
+			enoughFunds = false
+		}
+
+			
 		console.log('Minting from collection ', amount, ' tokens');
 		lastMintedTokenId = await mintFromCollection(amount);
 
@@ -150,7 +161,12 @@
 		<!-- <p>Available assets: {availableAssets} / {totalSupply}</p> -->
 		<!-- <p>Last token minted:{lastMintedTokenId}</p> -->
 		{#if $MintTransactionStore.status !== "not started"}
-			<p class="italic text-sm">{$MintTransactionStore.status}</p>
+			{#if !enoughFunds}
+				<p class="font-bold text-red-600">Not enough funds to execuute</p>
+			{:else}
+				<p class="italic text-sm">{$MintTransactionStore.status}</p>
+			{/if}
+
 	  	{/if}	
 	  {:else}
 		<p class="lg:text-xl italic">connect your wallet to execuute...</p>
