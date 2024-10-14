@@ -3,11 +3,12 @@
 	import { mintFromCollection, getAvailableMints } from '$lib/props-mint';
 	import MintTransactionStore, { transactionStatusType } from '$store/MintTransactionStore';
 	import { PUBLIC_MINT_PRICE, PUBLIC_IPFS_ADDRESS } from '$env/static/public';
-
+	import { getEthBalance } from '$lib/web3';
 	import { onMount } from 'svelte';
 
 	let lastMintedTokenId: number[];
 	let amount: number = 1;
+	let enoughFunds: boolean;
 	let availableAssets: number;
 	let price: number = parseFloat(PUBLIC_MINT_PRICE);
 	
@@ -21,6 +22,16 @@
 	});
 
 	async function handleCollectionMint(): Promise<void> {
+
+		let ethBalance = await getEthBalance();
+		console.log('ETH balance:', ethBalance);
+
+		if (!ethBalance || Number(ethBalance) < amount * price) {
+			// alert('Not enough funds to execuute');
+			enoughFunds = false
+		}
+
+			
 		console.log('Minting from collection ', amount, ' tokens');
 		lastMintedTokenId = await mintFromCollection(amount);
 
@@ -100,8 +111,8 @@
 <div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 2xl:p-14">
 	{#if lastMintedTokenId && $MintTransactionStore.status === "executioon confirmed"}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
-	<!-- <img class="select-none w-full h-full object-cover object-top" src={`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(5, '0')}.jpg`} alt="tbd executoor"> -->
-	<img class="select-none w-full h-full object-cover object-top" src={`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(4, '0')}.png`} alt="tbd executoor">
+	<!-- <img class="select-none w-full h-full object-cover object-top" src={`https://gateway.pinata.cloud/ipfs/Qmeje6s4QP2NLcm6tUWjFQeZ7HLCBvardq3yQb14WWibZn/${lastMintedTokenId[0].toString().padStart(4, '0')}.png`} alt="tbd executoor"> -->
+	<img class="select-none w-full h-full object-cover object-top" src={`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(5, '0')}.jpg`} alt="tbd executoor">
 	<!-- <img class="select-none w-full h-full object-cover object-top" src={`/images/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor"> -->
 	{:else}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
@@ -150,7 +161,12 @@
 		<!-- <p>Available assets: {availableAssets} / {totalSupply}</p> -->
 		<!-- <p>Last token minted:{lastMintedTokenId}</p> -->
 		{#if $MintTransactionStore.status !== "not started"}
-			<p class="italic text-sm">{$MintTransactionStore.status}</p>
+			{#if !enoughFunds}
+				<p class="font-bold text-red-600">Not enough funds to execuute</p>
+			{:else}
+				<p class="italic text-sm">{$MintTransactionStore.status}</p>
+			{/if}
+
 	  	{/if}	
 	  {:else}
 		<p class="lg:text-xl italic">connect your wallet to execuute...</p>
