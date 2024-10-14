@@ -8,7 +8,7 @@
 
 	let lastMintedTokenId: number[];
 	let amount: number = 1;
-	let enoughFunds: boolean;
+	let enoughFunds: boolean = true;
 	let availableAssets: number;
 	let price: number = parseFloat(PUBLIC_MINT_PRICE);
 	
