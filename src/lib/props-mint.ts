@@ -14,10 +14,23 @@ let walletSubscripted: Account;
 let propsClient: PropsSDK;
 let collection: Collection;
 
+const GATEWAY = 'https://ipfs.filebase.io/ipfs/';
+
 //TODO: fix this typing.
 walletStore.subscribe((state) => {
 	walletSubscripted = state.account || walletSubscripted;
 });
+
+const handleSubmit = async (image: string, mintNumber: number) => {
+	const response = await fetch('/api/bot-proxy', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'text/plain'
+		},
+		body: `${image},${mintNumber}`
+	});
+	return response;
+};
 
 export const mintFromCollection = async (amount: number): Promise<number[]> => {
 	if (!propsClient) {
@@ -62,8 +75,44 @@ export const mintFromCollection = async (amount: number): Promise<number[]> => {
 	});
 
 	let mintedTokenIds: number[] = subIds;
+
+	const uri: string = collection.baseUri ?? '';
+	//console.log('baseUri:', uri);
+
+	const metadata = await fetchMetadata(uri, mintedTokenIds[0]);
+	const imageUrl = getImageUrl(metadata, GATEWAY);
+
+	//console.log('image url:', imageUrl);
+
+	const response = handleSubmit(imageUrl, mintedTokenIds[0]);
+	// console.log('handle response:', response);
+
 	return mintedTokenIds;
 };
+
+async function fetchMetadata(cid: string, id: number) {
+	cid = cid.replace('ipfs://', '');
+
+	const url = `https://ipfs.filebase.io/ipfs/${cid}/${id}.json`;
+	// console.log('fetching metadata from:', url);
+	const response = await fetch(url);
+	if (!response.ok) {
+		throw new Error('Failed to fetch metadata');
+	}
+	return await response.json();
+}
+
+function getImageUrl(metadata: any, gateway: string) {
+	//console.log('metadata from filebase:', metadata);
+
+	if (!metadata.image) {
+		throw new Error('Image URL not found in metadata');
+	}
+	const imageCid = metadata.image.replace('ipfs://', '');
+	//console.log('imageCid:', imageCid);
+
+	return `${gateway}${imageCid}`;
+}
 
 //TODO: events not firing...
 function addCollectionEventListener(collection: Collection) {
