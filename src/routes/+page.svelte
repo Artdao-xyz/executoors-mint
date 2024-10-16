@@ -44,13 +44,13 @@
 		meta = data.meta;
 		currentPage = page;
 
-		console.log('artworks:', artworks);
+		// console.log('artworks:', artworks);
 	}
 
 	async function getStatus() {
 		const response = await fetch(`/api/status`);
 		const data = await response.json();
-		console.log('status:', data.status);
+		// console.log('status:', data.status);
 	}
 
 	onMount(() => {

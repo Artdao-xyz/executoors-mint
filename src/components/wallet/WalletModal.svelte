@@ -9,7 +9,7 @@
 	$: if (dialog && showModal) dialog.showModal();
 
 	const handleButtonClicked = () => {
-		console.log('should handle button clicked');
+		// console.log('should handle button clicked');
 		closeModal();
 	};
 

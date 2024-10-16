@@ -10,7 +10,7 @@
     
 	onMount(async () => {
 		availableAssets = await getAvailableMints();
-		console.log('Available assets on mount:', availableAssets);
+		// console.log('Available assets on mount:', availableAssets);
 	});
 
 </script>

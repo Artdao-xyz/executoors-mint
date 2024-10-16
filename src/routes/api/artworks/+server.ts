@@ -7,7 +7,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	const limit = Number(url.searchParams.get('limit') ?? '10');
 	const offset = (page - 1) * limit;
 
-	console.log('artworks api call: ok');
+	// console.log('artworks api call: ok');
 
 	const artworks = await prisma.artwork.findMany({
 		where: { active: true },
