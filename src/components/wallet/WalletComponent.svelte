@@ -22,7 +22,6 @@
 			: address;
 	};
 </script>
-
 <div 
 	class="absolute right-2 md:right-10 top-0 text-center bg-no-repeat bg-center bg-contain w-32 md:w-52 h-12 md:h-20 z-10" 
     style="background-image: url('/media/wallet-bg.png')">

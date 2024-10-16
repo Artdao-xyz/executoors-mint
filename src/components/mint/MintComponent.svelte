@@ -26,13 +26,11 @@
 
 		let ethBalance = await getEthBalance();
 		// console.log('ETH balance:', ethBalance);
-
 		if (!ethBalance || Number(ethBalance) < amount * price) {
 			// alert('Not enough funds to execuute');
 			enoughFunds = false
 		}
 
-			
 		// console.log('Minting from collection ', amount, ' tokens');
 		lastMintedTokenId = await mintFromCollection(amount);
 
