@@ -1,4 +1,7 @@
+//import adapter from '@sveltejs/adapter-auto';
+//import adapter from '@sveltejs/adapter-netlify';
 import adapter from '@sveltejs/adapter-auto';
+
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -13,9 +16,9 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		alias: {
-			$store: './src/store',
-			$wallet: './src/components/wallet',
-			$frontend: './src/components/frontend'
+			$store: 'src/store',
+			$wallet: 'src/components/wallet',
+			$frontend: 'src/components/frontend'
 		}
 	}
 };

@@ -8,7 +8,7 @@
 
 	export const getBalance = async (): Promise<string | null> => {
 		const balance = await getEthBalance();
-		console.log('balance', balance);
+		// console.log('balance', balance);
 		return balance;
 	};
 </script>
