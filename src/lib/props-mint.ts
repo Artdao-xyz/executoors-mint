@@ -25,16 +25,16 @@ export const mintFromCollection = async (amount: number): Promise<number[]> => {
 			network: 'testnet'
 		});
 	}
-	console.log('Minting from collection function called');
+	// console.log('Minting from collection function called');
 
 	const wallet: Account = walletSubscripted as Account;
-	console.log('wallet', wallet);
+	// console.log('wallet', wallet);
 
 	collection = await Collection.fromContractIdAndWallet(PUBLIC_COLLECTION_ID, wallet);
 
-	console.log('total mints', await getTotalMints(collection));
+	// console.log('total mints', await getTotalMints(collection));
 
-	console.log('events0 :', propsClient.editions.events);
+	// console.log('events0 :', propsClient.editions.events);
 
 	addCollectionEventListener(collection);
 
@@ -43,20 +43,20 @@ export const mintFromCollection = async (amount: number): Promise<number[]> => {
 	});
 
 	const res = await collection.mint(wallet.address.toString(), amount);
-	console.log('collection mint res', res);
+	// console.log('collection mint res', res);
 
 	const subIds = ((res as MintResult).transactionResult.mintedAssets as { subId: string }[]).map(
 		(asset) => {
 			return parseInt(asset.subId.slice(2), 16);
 		}
 	);
-	console.log('hexSubId:', subIds);
+	// console.log('hexSubId:', subIds);
 
 	let status: transactionStatusType = (res as MintResult).transactionResult.isStatusSuccess
 		? transactionStatusType.confirmed
 		: transactionStatusType.failed;
 
-	console.log('transaction status: ', status);
+	// console.log('transaction status: ', status);
 	MintTransactionStore.update((state) => {
 		return { ...state, status };
 	});
@@ -67,11 +67,11 @@ export const mintFromCollection = async (amount: number): Promise<number[]> => {
 
 //TODO: events not firing...
 function addCollectionEventListener(collection: Collection) {
-	console.log('Adding event listeners for collection:');
+	// console.log('Adding event listeners for collection:');
 
 	collection.on('error', (data) => {
-		console.log('Event catched:  ERROR: ', collection);
-		console.log(data);
+		// console.log('Event catched:  ERROR: ', collection);
+		// console.log(data);
 
 		MintTransactionStore.update((state) => {
 			return { ...state, status: transactionStatusType.failed };
@@ -79,25 +79,25 @@ function addCollectionEventListener(collection: Collection) {
 	});
 
 	collection.on('transaction', (data) => {
-		console.log('Event: Transaction waiting for approval: ', collection);
-		console.log(
-			'Transaction: ',
-			data.transactionIndex,
-			data.transactionCount,
-			data.transactionHash
-		);
+		// console.log('Event: Transaction waiting for approval: ', collection);
+		// console.log(
+		// 	'Transaction: ',
+		// 	data.transactionIndex,
+		// 	data.transactionCount,
+		// 	data.transactionHash
+		// );
 		MintTransactionStore.update((state) => {
 			return { ...state, status: transactionStatusType.awaitingConfirmation };
 		});
 	});
 
 	collection.on('waiting', (data) => {
-		console.log('Event: Waiting for transaction to clear:', data);
+		// console.log('Event: Waiting for transaction to clear:', data);
 		MintTransactionStore.update((state) => {
 			return { ...state, status: transactionStatusType.pending };
 		});
 	});
-	console.log('adds events');
+	// console.log('adds events');
 }
 
 async function getTotalMints(collection: Collection): Promise<number> {

@@ -16,15 +16,16 @@
 
 	onMount(async () => {
 		availableAssets = await getAvailableMints();
-		console.log('Available assets on mount:', availableAssets);
+		// console.log('Available assets on mount:', availableAssets);
 
 		// $MintTransactionStore.status[4]
+		// console.log(`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(4, '0')}.png`);
 	});
 
 	async function handleCollectionMint(): Promise<void> {
 
 		let ethBalance = await getEthBalance();
-		console.log('ETH balance:', ethBalance);
+		// console.log('ETH balance:', ethBalance);
 
 		if (!ethBalance || Number(ethBalance) < amount * price) {
 			// alert('Not enough funds to execuute');
@@ -32,10 +33,10 @@
 		}
 
 			
-		console.log('Minting from collection ', amount, ' tokens');
+		// console.log('Minting from collection ', amount, ' tokens');
 		lastMintedTokenId = await mintFromCollection(amount);
 
-		console.log('lastMintedTokenId', lastMintedTokenId);
+		// console.log('lastMintedTokenId', lastMintedTokenId);
 
 		await updateMintStatus(lastMintedTokenId);
 		availableAssets = await getAvailableMints();
@@ -56,7 +57,7 @@
 			}
 
 			const result = await response.json();
-			console.log('Record updated successfully:', result);
+			// console.log('Record updated successfully:', result);
 			return result;
 		} catch (error) {
 			console.error('Error updating record:', error);
@@ -111,9 +112,7 @@
 <div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 2xl:p-14">
 	{#if lastMintedTokenId && $MintTransactionStore.status === "executioon confirmed"}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
-	<!-- <img class="select-none w-full h-full object-cover object-top" src={`https://gateway.pinata.cloud/ipfs/Qmeje6s4QP2NLcm6tUWjFQeZ7HLCBvardq3yQb14WWibZn/${lastMintedTokenId[0].toString().padStart(4, '0')}.png`} alt="tbd executoor"> -->
-	<img class="select-none w-full h-full object-cover object-top" src={`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(5, '0')}.jpg`} alt="tbd executoor">
-	<!-- <img class="select-none w-full h-full object-cover object-top" src={`/images/${lastMintedTokenId[0].toString().padStart(5, '0')}.png`} alt="tbd executoor"> -->
+	<img class="select-none w-full h-full object-cover object-top" src={`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(4, '0')}.png`} alt="tbd executoor">
 	{:else}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
 	<img class="select-none w-full h-full object-contain" src="/media/tbd.png" alt="tbd executoor">

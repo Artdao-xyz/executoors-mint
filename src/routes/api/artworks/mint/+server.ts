@@ -3,11 +3,11 @@ import type { RequestHandler } from './$types';
 import prisma from '$lib/prisma';
 
 export const POST: RequestHandler = async ({ request }) => {
-	console.log('post request arrived');
+	// console.log('post request arrived');
 	try {
 		const { editions } = await request.json();  // Change to receive 'editions'
 
-		console.log('editions:', editions);
+		// console.log('editions:', editions);
 
 		const updatedRecords = await prisma.$transaction(
 			editions.map((edition: number) =>
