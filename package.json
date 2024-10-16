@@ -38,9 +38,9 @@
 	"type": "module",
 	"dependencies": {
 		"@designbycode/tailwindcss-text-stroke": "^1.2.1",
-		"@fuels/connectors": "^0.35.1",
+		"@fuels/connectors": "^0.36.0",
 		"@prisma/client": "^5.20.0",
-		"@props-labs/fuels": "^0.2.0-next.1",
+		"@props-labs/fuels": "^0.2.5",
 		"autoprefixer": "^10.4.20",
 		"fuels": "^0.96.1",
 		"mongodb": "^6.8.0",
