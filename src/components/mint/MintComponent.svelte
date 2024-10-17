@@ -74,7 +74,7 @@
 	function validateInput(): void {
 		const value: number = parseInt(String(amount), 10);
 		if (!isNaN(value)) {
-			amount = Math.min(3, Math.max(1, value));
+			amount = Math.min(15, Math.max(1, value));
 		}
 	}
 
