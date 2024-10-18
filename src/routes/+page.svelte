@@ -80,7 +80,7 @@
          style="background-image: url(media/bg.png)">
     </div>
 
-	<div class="fixed top-0 left-0 bg-yellow-700 text-white text-sm font-bold px-4 py-2 rounded-br-lg shadow-lg">Fuel Wallet experiencing executorial difficulties. Use Fuelet to execute.</div>
+	<div class="fixed top-0 left-0 bg-yellow-700 text-white text-sm font-bold px-4 py-2 rounded-br-lg shadow-lg">Fuel Wallet experiencing execuutoorial difficulties. Use Fuelet to execuute.</div>
 
     <Header/>
 
