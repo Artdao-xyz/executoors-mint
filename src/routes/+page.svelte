@@ -74,9 +74,14 @@
 </script>
 
 <div class="w-screen max-w-screen h-svh lg:h-screen max-h-screen relative">
+
+
     <div class="absolute inset-0 bg-center bg-no-repeat bg-cover brightness-50 blur-sm lg:filter-none" 
          style="background-image: url(media/bg.png)">
     </div>
+
+	<div class="fixed top-0 left-0 bg-yellow-700 text-white text-sm font-bold px-4 py-2 rounded-br-lg shadow-lg">Fuel Wallet experiencing executorial difficulties. Use Fuelet to execute.</div>
+
     <Header/>
 
 	<WalletProvider>
