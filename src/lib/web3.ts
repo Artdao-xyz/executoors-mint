@@ -1,7 +1,7 @@
-import { Fuel } from 'fuels';
+import { Fuel, Provider } from 'fuels';
 import type { Account, CoinQuantity, FuelConnector } from 'fuels';
 import { updateStoreBooleanField, updateStoreStringField } from '$store/updateStoreField';
-import { PUBLIC_WCPROJECT_ID } from '$env/static/public';
+import { PUBLIC_WCPROJECT_ID, PUBLIC_PROVIDER_URL } from '$env/static/public';
 
 import type { WalletButton } from '$store/WalletButtonsStore';
 import WalletButtonStore from '$store/WalletButtonsStore';
@@ -13,29 +13,44 @@ let buttons: WalletButton[] = [];
 let buttonsInitialized = false;
 
 export const initFuels = async () => {
-	// console.log('initFuels');
+	console.log('initFuels');
 
 	const { defaultConnectors } = await import('@fuels/connectors');
 
-	const { FuelWalletConnector, FueletWalletConnector, WalletConnectConnector, SolanaConnector } =
-		await import('@fuels/connectors');
+	const {
+		FuelWalletConnector,
+		FueletWalletConnector,
+		WalletConnectConnector,
+		// SolanaConnector,
+		BakoSafeConnector
+	} = await import('@fuels/connectors');
+
+	const provider = await Provider.create(PUBLIC_PROVIDER_URL.toString());
 
 	fuel = new Fuel({
 		connectors: [
-			/*
-			new WalletConnectConnector({ projectId: PUBLIC_WCPROJECT_ID }),
 			new FuelWalletConnector(),
 			new FueletWalletConnector(),
-			new SolanaConnector({})
-			*/
+			new BakoSafeConnector(),
+			new WalletConnectConnector({
+				fuelProvider: provider,
+				projectId: PUBLIC_WCPROJECT_ID
+			}),
 
+			// new SolanaConnector({
+			// 	fuelProvider: provider,
+			// 	projectId: PUBLIC_WCPROJECT_ID
+			// })
+
+			/*
 			...defaultConnectors({
 				wcProjectId: PUBLIC_WCPROJECT_ID
 			})
+			*/
 		]
 	});
 
-	// console.log('connectors at init', fuel.connectors());
+	console.log('connectors at init', fuel.connectors());
 
 	buttons = initButtons();
 
@@ -54,11 +69,11 @@ export const initFuels = async () => {
 	fuel?.on(fuel.events.networks, handleNetworksEvent);
 	fuel?.on(fuel.events.connectors, handleConnectorsEvent);
 
-	// console.log('buttonsArray at init', buttons);
+	console.log('buttonsArray at init', buttons);
 };
 
 const initButtonsConnectors = (connectors: FuelConnector[]): WalletButton[] => {
-	// console.log('initialize button Connectors');
+	console.log('initialize button Connectors');
 
 	buttons = connectors.map((connector) => {
 		const button = buttons.find((btn) => btn.name === connector.name);
@@ -79,10 +94,10 @@ const initButtonsConnectors = (connectors: FuelConnector[]): WalletButton[] => {
 };
 
 const handleConnectorsEvent = async (connectors: string[]) => {
-	// console.log('handleConnectorsEvent', connectors);
+	console.log('handleConnectorsEvent', connectors);
 
 	//if (!buttonsInitialized) {
-	// console.log('initialize buttons');
+	console.log('initialize buttons');
 	const cons = await fuel?.connectors();
 
 	buttons = cons.map((connector) => {
@@ -109,26 +124,26 @@ const handleConnectorsEvent = async (connectors: string[]) => {
 };
 
 const handleConnectEvent = (connected: boolean) => {
-	// console.log('handleConnectEvent', connected);
+	console.log('handleConnectEvent', connected);
 };
 
 const handleAccountsEvent = async (accounts: string[]) => {
-	// console.log('handleAccountsEvent', accounts);
+	console.log('handleAccountsEvent', accounts);
 };
 
 const handleCurrAccountEvent = async (account: string) => {
-	// console.log('handleCurrAccountEvent', account);
+	console.log('handleCurrAccountEvent', account);
 	//const wallet = await fuel.getWallet(account);
 	//TODO: check return values "0x... or fuel... adresses"
 	updateStoreStringField(walletStore, 'currentAccount', account);
 };
 
 const handleCurrNetworkEvent = (network: string) => {
-	// console.log('handleCurrNetworkEvent', network);
+	console.log('handleCurrNetworkEvent', network);
 };
 
 const handleNetworksEvent = (networks: string[]) => {
-	// console.log('handleNetworksEvent', networks);
+	console.log('handleNetworksEvent', networks);
 };
 
 export const selectWalletByName = async (name: string): Promise<boolean> => {
@@ -138,9 +153,9 @@ export const selectWalletByName = async (name: string): Promise<boolean> => {
 		isSelected = await fuel.selectConnector(name);
 		updateStoreStringField(walletStore, 'walletType', name);
 
-		// console.log(name, ' selected: ', isSelected);
+		console.log(name, ' selected: ', isSelected);
 	} catch (e) {
-		// console.log(e);
+		console.log(e);
 		return false;
 	}
 
@@ -153,7 +168,7 @@ export const connectWallet = async (): Promise<boolean> => {
 		connectionState = await fuel.connect();
 		updateStoreBooleanField(walletStore, 'isConnected', connectionState);
 	} catch (e) {
-		// console.log(e);
+		console.log(e);
 	}
 
 	try {
@@ -166,21 +181,21 @@ export const connectWallet = async (): Promise<boolean> => {
 				return { ...state, account: wallet };
 			});
 
-			// console.log('wallet  ', wallet);
-			// console.log('fuel wallet address', wallet.address.toString());
+			console.log('wallet  ', wallet);
+			console.log('fuel wallet address', wallet.address.toString());
 		}
 	} catch (e) {
-		// console.log(e);
+		console.log(e);
 	}
 
-	// console.log('connects');
+	console.log('connects');
 
 	return connectionState;
 };
 
 export const getCurrentAccount = async (): Promise<string | null> => {
 	const account = await fuel.currentAccount();
-	// console.log('account', account);
+	console.log('account', account);
 
 	return await fuel.currentAccount();
 };
@@ -192,7 +207,7 @@ export const disconnectWallet = async (): Promise<boolean> => {
 	updateStoreStringField(walletStore, 'walletType', '');
 	updateStoreStringField(walletStore, 'currentAccount', '');
 
-	// console.log('disconnects');
+	console.log('disconnects');
 	return connectionState;
 };
 
@@ -204,7 +219,7 @@ export const getEthBalance = async (): Promise<string | null> => {
 			const wallet = await fuel.getWallet(currentAccount);
 
 			const balances: CoinQuantity[] = (await wallet.getBalances()).balances;
-			// console.log('balances', balances);
+			console.log('balances', balances);
 
 			const ETHbalance = await wallet.getBalance(
 				'0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07'
@@ -213,7 +228,7 @@ export const getEthBalance = async (): Promise<string | null> => {
 			balance = ETHbalance.format();
 		}
 	} catch (e) {
-		// console.log(e);
+		console.log(e);
 	}
 	return balance;
 };
