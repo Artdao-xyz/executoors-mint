@@ -21,7 +21,7 @@ export const initFuels = async () => {
 		FuelWalletConnector,
 		FueletWalletConnector,
 		WalletConnectConnector,
-		// SolanaConnector,
+		SolanaConnector,
 		BakoSafeConnector
 	} = await import('@fuels/connectors');
 
@@ -37,10 +37,10 @@ export const initFuels = async () => {
 				projectId: PUBLIC_WCPROJECT_ID
 			}),
 
-			// new SolanaConnector({
-			// 	fuelProvider: provider,
-			// 	projectId: PUBLIC_WCPROJECT_ID
-			// })
+			new SolanaConnector({
+				fuelProvider: provider,
+				projectId: PUBLIC_WCPROJECT_ID
+			})
 
 			/*
 			...defaultConnectors({
