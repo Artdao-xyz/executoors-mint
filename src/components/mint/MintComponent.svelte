@@ -110,7 +110,8 @@
 <div class="relative w-64 h-64 lg:w-72 2xl:w-96 lg:h-72 2xl:h-96 p-9 2xl:p-14">
 	{#if lastMintedTokenId && $MintTransactionStore.status === "executioon confirmed"}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
-	<img class="select-none w-full h-full object-cover object-top" src={`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(4, '0')}.png`} alt="tbd executoor">
+	<img class="select-none w-full h-full object-cover object-top" src={`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(5, '0')}.jpg`} alt="tbd executoor">
+	<!-- <img class="select-none w-full h-full object-cover object-top" src={`${PUBLIC_IPFS_ADDRESS}${lastMintedTokenId[0].toString().padStart(4, '0')}.png`} alt="tbd executoor"> -->
 	{:else}
 	<img class="absolute inset-0 w-full h-full object-contain" src="/media/frame.png" alt="artwork">
 	<img class="select-none w-full h-full object-contain" src="/media/tbd.png" alt="tbd executoor">

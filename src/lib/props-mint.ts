@@ -77,14 +77,14 @@ export const mintFromCollection = async (amount: number): Promise<number[]> => {
 	let mintedTokenIds: number[] = subIds;
 
 	const uri: string = collection.baseUri ?? '';
-	//console.log('baseUri:', uri);
+	// console.log('baseUri:', uri);
 
-	const metadata = await fetchMetadata(uri, mintedTokenIds[0]);
-	const imageUrl = getImageUrl(metadata, GATEWAY);
+	// const metadata = await fetchMetadata(uri, mintedTokenIds[0]);
+	// const imageUrl = getImageUrl(metadata, GATEWAY);
 
 	//console.log('image url:', imageUrl);
 
-	const response = handleSubmit(imageUrl, mintedTokenIds[0]);
+	// const response = handleSubmit(imageUrl, mintedTokenIds[0]);
 	// console.log('handle response:', response);
 
 	return mintedTokenIds;
