@@ -13,8 +13,8 @@
         <a class="block active:brightness-50" target="_blank" href="https://x.com/executoors"><img draggable="false" class="h-14 object-contain" src="media/x.png" alt="x"></a>
         <a class="block active:brightness-50" target="_blank" href="https://t.me/+V1zVFD_TAbM3MGEx"><img draggable="false" class="h-14 object-contain" src="media/telegram.png" alt="telegram"></a>
     </div>
-
+<!-- 
     <WalletProvider>
         <WalletComponent/>
-    </WalletProvider>
+    </WalletProvider> -->
 </header>
