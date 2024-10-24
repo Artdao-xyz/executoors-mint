@@ -15,7 +15,7 @@
     $: total  = price * amount;
 
 	onMount(async () => {
-		availableAssets = await getAvailableMints();
+		// availableAssets = await getAvailableMints();
 		// console.log('Available assets on mount:', availableAssets);
 
 		// $MintTransactionStore.status[4]
@@ -126,7 +126,7 @@
 {/if}
 
 <div class="flex flex-col items-center justify-center gap-1">
-	{#if $walletStore.isConnected}
+	<!-- {#if $walletStore.isConnected}
 		{#if $MintTransactionStore.status !== 'executioon confirmed'}
 			<input
 				type="number"
@@ -140,8 +140,7 @@
 			<button 
 			on:click={handleCollectionMint} 
 			class="active:brightness-50 disabled:active:brightness-100 disabled:opacity-50 disabled:cursor-not-allowed" 
-			disabled={$MintTransactionStore.status === 'preparing to execuute' || $MintTransactionStore.status === 'awaiting confirmation'}
-			>
+			disabled={true}	>
 				<p class="uppercase lg:text-lg tracking-wider font-bold">total: {total} ETH</p>
 				<img class="w-44 h-12 object-contain" src="/media/mint.png" alt="mint">
 			</button>
@@ -155,8 +154,6 @@
 				</button>
 			</div>
 		{/if}
-		<!-- <p>Available assets: {availableAssets} / {totalSupply}</p> -->
-		<!-- <p>Last token minted:{lastMintedTokenId}</p> -->
 		{#if $MintTransactionStore.status !== "not started"}
 			{#if !enoughFunds}
 				<p class="font-bold text-red-600">Not enough funds to execuute</p>
@@ -167,5 +164,5 @@
 	  	{/if}	
 	  {:else}
 		<p class="lg:text-xl italic">connect your wallet to execuute...</p>
-	{/if}
+	{/if} -->
 </div>

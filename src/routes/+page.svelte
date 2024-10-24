@@ -54,8 +54,8 @@
 	}
 
 	onMount(() => {
-		getStatus();
-		fetchItems();
+		// getStatus();
+		// fetchItems();
 	});
 
 	const openNft = (art: Artwork) => {
@@ -84,10 +84,10 @@
 
     <Header/>
 
-	<WalletProvider>
+	<!-- <WalletProvider>
 		<WalletComponent />
 
-	</WalletProvider>
+	</WalletProvider> -->
     <MainExecutoor/>
     <Mint/>
 </div>
